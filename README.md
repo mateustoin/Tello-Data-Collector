@@ -27,4 +27,4 @@ Calma, essa é a forma que a lista é retornada, o que indica que o que for *%d*
 * agy: aceleração do drone em y,
 * agz: aceleração do drone em z,
 
-### [RESULTADOS PRELIMINARES PODEM SER VISTOS AQUI](Analisando alguns dados.ipynb)
+### [RESULTADOS PRELIMINARES PODEM SER VISTOS AQUI](TelloDataAnalysis.ipynb)
