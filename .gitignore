@@ -1,5 +1,4 @@
 #Ignora os arquivos csv com os dados gerados pelo servidor
-*.csv
 test.py
 .vscode/*
 .vscode/
