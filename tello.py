@@ -6,10 +6,26 @@ import pandas as pd
 class DataTello:
     
     def __init__(self):
+        # Inicia objeto de controle do Tello
         self.tello = Tello()
         
-        self.__array = []
+        # Array onde será armazenado a lista de dados coletado pelo Tello
         self.__data = []
+        self.__array = []
+
+        # Tempo de voo em mili segundos
+        self.tempoVoo = 360000
+
+        '''
+        ___Padrão para nome dos arquivos das tabelas___
+        Onde x é o nº da tabela e y a quantidade de tempo em segundos do voo
+        
+        1. Para a janela fechada e porta fechada: x_tudoFechado_y.csv
+        2. Para a janela aberta e porta aberta: x_janelaPortaAberta_y.csv
+        3. Para a janela e porta aberta, com ventilador ligado na direção do drone: x_janelaPortaAbertaVentilador_y.csv
+        '''
+
+        # Padrão de nome
         self.nomeArquivo = 'test_total_2_janela_ventilador'
         self.__df = pd.DataFrame(columns=['timestamp', 'pitch', 'roll', 
                                           'yaw', 'vgx', 'vgy', 'vgz', 
@@ -41,12 +57,13 @@ class DataTello:
     '''           
 
     def fly(self):
+        #
         self.tello.connect()
         self.tello.takeoff()
         timestampInicial = int(round(time.time() * 1000))
         timestampFinal = timestampInicial
-        
-        while ((timestampFinal - timestampInicial) < 360000):
+
+        while ((timestampFinal - timestampInicial) < self.tempoVoo):
             timestampFinal = int(round(time.time() * 1000))         # Cria timestamp no momento que recebe os dados
             self.__data.append(self.tello.get_states())
             if (not len(self.__data) % 20 == 0):
