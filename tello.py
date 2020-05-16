@@ -1,9 +1,3 @@
-'''
-    # Este método será chamado automaticamente se o objeto da classe for chamado em print(objeto)
-    def __str__(self):
-        return 'Olá, meu nome é ' + self.__name + ' e minha idade é ' + str(self.__age) + '!'
-'''
-
 from djitellopy import Tello
 import time
 import threading
@@ -51,6 +45,7 @@ class DataTello:
         self.tello.takeoff()
         timestampInicial = int(round(time.time() * 1000))
         timestampFinal = timestampInicial
+        
         while ((timestampFinal - timestampInicial) < 360000):
             timestampFinal = int(round(time.time() * 1000))         # Cria timestamp no momento que recebe os dados
             self.__data.append(self.tello.get_states())
