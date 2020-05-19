@@ -14,7 +14,7 @@ class DataTello:
         self.__array = []
 
         # Tempo de voo em mili segundos
-        self.tempoVoo = 360000
+        self.tempoVoo = 420000
 
         '''
         ___Padrão para nome dos arquivos das tabelas___
@@ -26,7 +26,7 @@ class DataTello:
         '''
 
         # Padrão de nome
-        self.nomeArquivo = 'test_total_2_janela_ventilador'
+        self.nomeArquivo = '2_tudoFechado_420'
         self.__df = pd.DataFrame(columns=['timestamp', 'pitch', 'roll', 
                                           'yaw', 'vgx', 'vgy', 'vgz', 
                                           'templ', 'temph', 'tof', 
@@ -64,10 +64,15 @@ class DataTello:
         timestampFinal = timestampInicial
 
         while ((timestampFinal - timestampInicial) < self.tempoVoo):
-            timestampFinal = int(round(time.time() * 1000))         # Cria timestamp no momento que recebe os dados
-            self.__data.append(self.tello.get_states())
-            if (not len(self.__data) % 20 == 0):
-                self.tello.send_command_without_return('command')
+            try:
+                timestampFinal = int(round(time.time() * 1000))         # Cria timestamp no momento que recebe os dados
+                self.__data.append(self.tello.get_states())
+                if (not len(self.__data) % 20 == 0):
+                    self.tello.send_command_without_return('command')
+            except KeyboardInterrupt:
+                print ('\n . . .\n')
+                self.tello.end()  
+                break
 
         self.tello.land()
         self.tello.end()
@@ -79,6 +84,9 @@ class DataTello:
                             item[21],    item[23], item[25], item[27], item[29], item[31]] # Adiciona os novos valores em uma nova linha do DataFrame
 
         self.__df.to_csv('{}.csv'.format(self.nomeArquivo))
+
+    def stop(self):
+        self.tello.end()
 
         
 
@@ -112,7 +120,8 @@ class DataTello:
 
 def main():
     dataTello = DataTello()
-    dataTello.fly()   
+    dataTello.fly()
+    #dataTello.stop()
 
 if __name__ == "__main__":
     main() 
